@@ -53,6 +53,7 @@ defmodule YourApp.Mixfile do
   end
 end
 ```
+Run `mix deps.get` to install `Pandex`
 
 # Usage
 
@@ -71,6 +72,10 @@ html_to_opendocument "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<u
 
 commonmark_to_latex "# Title \n\n## List\n\n- one\n- two\n- three\n"
 # {:ok, "\\section{Title}\n\n\\subsection{List}\n\n\\begin{itemize}\n\\tightlist\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n"}
+
+markdown_file_to_html "sample.md"
+# {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
+
 ```
 
 In your Elixir/Phoenix app:
@@ -80,6 +85,18 @@ defmodule YourApp do
 
   def convert(string)  do
     {:ok, output} = markdown_to_html string
+    IO.puts output
+  end
+end
+```
+
+You can also give a file as an input. The output will however be a string.
+``` elixir
+defmodule YourApp do
+  import Pandex
+
+  def convert(file)  do
+    {:ok, output} = markdown_file_to_html file
     IO.puts output
   end
 end

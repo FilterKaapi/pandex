@@ -1,7 +1,8 @@
 defmodule Pandex do
-  @readers ["markdown", "json", "rst", "textile", "html", "latex"]
+  @readers ["markdown", "markdown_github", "markdown_strict", "markdown_mmd", "markdown_phpextra", "commonmark", "json", "rst", "textile", "html", "latex"]
   @writers [ "json", "html", "html5", "s5", "slidy", "dzslides", "docbook", "man",
             "opendocument", "latex", "beamer", "context", "texinfo", "markdown",
+            "markdown_github", "markdown_strict", "markdown_mmd", "markdown_phpextra", "commonmark",
             "plain", "rst", "mediawiki", "textile", "rtf", "org", "asciidoc" ]
 
   Enum.each @readers, fn (reader) ->

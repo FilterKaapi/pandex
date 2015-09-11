@@ -6,12 +6,10 @@ Pandex accepts documents in "markdown", "json", "rst", "textile", "html", "latex
 
 # Installation
 
-## Prerequisites
-
 - Pandex requires Pandoc to work. [Install Pandoc](http://pandoc.org/installing.html) for your operating system.
 - Add Pandex to `mix.exs` as follows:
 
-```
+``` elixir
 defmodule YourApp.Mixfile do
   use Mix.Project
 
@@ -30,7 +28,7 @@ end
 # Usage
 
 In your module
-```
+``` elixir
 defmodule YourApp do
   import Pandex
 

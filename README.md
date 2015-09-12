@@ -1,6 +1,6 @@
 # Pandex
 
-Pandex is a lightweight ELixir wrapper for [Pandoc](http://pandoc.org). Pandex has no dependencies other than elixir itself.
+Pandex is a lightweight Elixir wrapper for [Pandoc](http://pandoc.org). Pandex has no dependencies other than Pandoc itself.
 
 Pandex enables you to perform any permutation of the conversion below:
 
@@ -35,17 +35,11 @@ markdown_phpextra | beamer
 
 # Installation
 
-- Pandex requires Pandoc to work. [Install Pandoc](http://pandoc.org/installing.html) for your operating system.
-- Add Pandex to `mix.exs` as follows:
+1. Pandex requires Pandoc to work. [Install Pandoc](http://pandoc.org/installing.html) for your operating system.
 
+2. Add Pandex to `mix.exs` as follows:
 ``` elixir
 defmodule YourApp.Mixfile do
-  use Mix.Project
-
-  def application do
-    [applications: [:logger, :pandex]]
-  end
-
   defp deps do
     [
       {:pandex, "~> 0.0.1"}
@@ -53,32 +47,76 @@ defmodule YourApp.Mixfile do
   end
 end
 ```
-Run `mix deps.get` to install `Pandex`
+
+3. Run `mix deps.get` to install `Pandex`.
+
+4. Add `Pandex` your application block in `mix.exs`
+``` elixir
+defmodule YourApp.Mixfile do
+  use Mix.Project
+
+  def application do
+    [applications: [:logger, :pandex]]
+  end
+end
+```
 
 # Usage
 
 Pandex follows the syntax of `<format from>_to_<format to> <string>`
 
-For example:
+## Examples
+
 ``` elixir
-markdown_to_html "# Title \n\n## List\n\n- one\n- two\n- three\n"
-# {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
+iex> Pandex.markdown_to_html "# Title \n\n## List\n\n- one\n- two\n- three\n"
+{:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
 
-html_to_commonmark "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"
-# {:ok, "# Title\n\n## List\n\n* one\n* two\n* three\n\n"}
+iex> Pandex.html_to_commonmark "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"
+{:ok, "# Title\n\n## List\n\n* one\n* two\n* three\n\n"}
 
-html_to_opendocument "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"
-# {:ok, "<text:h text:style-name=\"Heading_20_1\" text:outline-level=\"1\">Title</text:h>\n<text:h text:style-name=\"Heading_20_2\" text:outline-level=\"2\">List</text:h>\n<text:list text:style-name=\"L1\">\n  <text:list-item>\n    <text:p text:style-name=\"P1\">one</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">two</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">three</text:p>\n  </text:list-item>\n</text:list>\n"}
+iex> Pandex.html_to_opendocument "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"
+{:ok, "<text:h text:style-name=\"Heading_20_1\" text:outline-level=\"1\">Title</text:h>\n<text:h text:style-name=\"Heading_20_2\" text:outline-level=\"2\">List</text:h>\n<text:list text:style-name=\"L1\">\n  <text:list-item>\n    <text:p text:style-name=\"P1\">one</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">two</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">three</text:p>\n  </text:list-item>\n</text:list>\n"}
 
-commonmark_to_latex "# Title \n\n## List\n\n- one\n- two\n- three\n"
-# {:ok, "\\section{Title}\n\n\\subsection{List}\n\n\\begin{itemize}\n\\tightlist\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n"}
+iex> Pandex.commonmark_to_latex "# Title \n\n## List\n\n- one\n- two\n- three\n"
+{:ok, "\\section{Title}\n\n\\subsection{List}\n\n\\begin{itemize}\n\\tightlist\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n"}
 
-markdown_file_to_html "sample.md"
-# {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
+iex> Pandex.latex_to_html5 "\\section{Title}\n\n\\subsection{List}\n\n\\begin{itemize}\n\\tightlist\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n"
+{:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li><p>one</p></li>\n<li><p>two</p></li>\n<li><p>three</p></li>\n</ul>\n"}
+
+iex> Pandex.html_to_latex "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li><p>one</p></li>\n<li><p>two</p></li>\n<li><p>three</p></li>\n</ul>\n"
+{:ok, "\\section{Title}\\label{title}\n\n\\subsection{List}\\label{list}\n\n\\begin{itemize}\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n"}
+
+iex> Pandex.latex_to_json "\\section{Title}\\label{title}\n\n\\subsection{List}\\label{list}\n\n\\begin{itemize}\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n"
+{:ok, "[{\"unMeta\":{}},[{\"t\":\"Header\",\"c\":[1,[\"title\",[],[]],[{\"t\":\"Str\",\"c\":\"Title\"}]]},{\"t\":\"Header\",\"c\":[2,[\"list\",[],[]],[{\"t\":\"Str\",\"c\":\"List\"}]]},{\"t\":\"BulletList\",\"c\":[[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"one\"}]}],[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"two\"}]}],[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"three\"}]}]]}]]\n"}
+
+iex> Pandex.markdown_to_rst "# Title \n\n## List\n\n- one\n- two\n- three\n"
+{:ok, "Title\n=====\n\nList\n----\n\n-  one\n-  two\n-  three\n"}
+
+iex> Pandex.markdown_to_rtf "# Title \n\n## List\n\n- one\n- two\n- three\n"
+{:ok, "{\\pard \\ql \\f0 \\sa180 \\li0 \\fi0 \\b \\fs36 Title\\par}\n{\\pard \\ql \\f0 \\sa180 \\li0 \\fi0 \\b \\fs32 List\\par}\n{\\pard \\ql \\f0 \\sa0 \\li360 \\fi-360 \\bullet \\tx360\\tab one\\par}\n{\\pard \\ql \\f0 \\sa0 \\li360 \\fi-360 \\bullet \\tx360\\tab two\\par}\n{\\pard \\ql \\f0 \\sa0 \\li360 \\fi-360 \\bullet \\tx360\\tab three\\sa180\\par}\n"}
+
+iex> Pandex.markdown_to_opendocument "# Title \n\n## List\n\n- one\n- two\n- three\n"
+{:ok, "<text:h text:style-name=\"Heading_20_1\" text:outline-level=\"1\">Title</text:h>\n<text:h text:style-name=\"Heading_20_2\" text:outline-level=\"2\">List</text:h>\n<text:list text:style-name=\"L1\">\n  <text:list-item>\n    <text:p text:style-name=\"P1\">one</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">two</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">three</text:p>\n  </text:list-item>\n</text:list>\n"}
+
+iex> Pandex.commonmark_to_textile "# Title \n\n## List\n\n- one\n- two\n- three\n"
+{:ok, "h1. Title\n\nh2. List\n\n* one\n* two\n* three\n\n"}
+
+iex> Pandex.textile_to_markdown_github "h1. Title\n\nh2. List\n\n* one\n* two\n* three\n\n"
+{:ok, "Title\n=====\n\nList\n----\n\n-   one\n-   two\n-   three\n\n"}
+
+iex> Pandex.textile_to_markdown_phpextra "h1. Title\n\nh2. List\n\n* one\n* two\n* three\n\n"
+{:ok, "Title {#title}\n=====\n\nList {#list}\n----\n\n-   one\n-   two\n-   three\n\n"}
+
+iex> Pandex.textile_to_html5 "h1. Title\n\nh2. List\n\n* one\n* two\n* three\n\n"
+{:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
+
+iex> Pandex.textile_to_opendocument "h1. Title\n\nh2. List\n\n* one\n* two\n* three\n\n"
+{:ok, "<text:h text:style-name=\"Heading_20_1\" text:outline-level=\"1\">Title</text:h>\n<text:h text:style-name=\"Heading_20_2\" text:outline-level=\"2\">List</text:h>\n<text:list text:style-name=\"L1\">\n  <text:list-item>\n    <text:p text:style-name=\"P1\">one</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">two</text:p>\n  </text:list-item>\n  <text:list-item>\n    <text:p text:style-name=\"P1\">three</text:p>\n  </text:list-item>\n</text:list>\n"}
 
 ```
 
-In your Elixir/Phoenix app:
+## Using with your app
+
 ``` elixir
 defmodule YourApp do
   import Pandex

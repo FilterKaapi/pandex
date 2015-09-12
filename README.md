@@ -37,17 +37,20 @@ markdown_phpextra | beamer
 
 1. Pandex requires Pandoc to work. [Install Pandoc](http://pandoc.org/installing.html) for your operating system.
 2. Add Pandex to `mix.exs` as follows:
+
   ``` elixir
   defmodule YourApp.Mixfile do
     defp deps do
       [
-        {:pandex, "~> 0.0.1"}
+        {:pandex, "~> 0.0.3"}
       ]
     end
   end
   ```
+
 3. Run `mix deps.get` to install `Pandex`.
 4. Add `Pandex` your application block in `mix.exs`
+
   ``` elixir
   defmodule YourApp.Mixfile do
     use Mix.Project

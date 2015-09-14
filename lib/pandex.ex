@@ -7,40 +7,38 @@ defmodule Pandex do
 
   @moduledoc ~S"""
 
-  # Pandex
+  Pandex is a lightweight ELixir wrapper for [Pandoc](http://pandoc.org). Pandex has no dependencies other than pandoc itself. Pandex enables you to convert Markdown, CommonMark, HTML, Latex, json, html to HTML, HTML5, opendocument, rtf, texttile, asciidoc, markdown, json and others. Pandex has no dependencies other than Pandoc itself.
 
-  Pandex is a lightweight ELixir wrapper for [Pandoc](http://pandoc.org). Pandex has no dependencies other than pandoc itself.
+  Pandex enables you to perform any combination of the conversion below:
 
-  Pandex enables you to perform any permutation of the conversion below:
-
-  Convert From (any)| Convert To (any)
-  ------------------|-------------------
-  markdown          | json
-  markdown_github   | html
-  markdown_strict   | html5
-  markdown_mmd      | s5
-  commonmark        | slidy
-  json              | dzslides
-  rst               | docbook
-  textile           | man
-  html              | opendocument
-  latex             | latex
-  markdown_phpextra | beamer
-                    | context
-                    | texinfo
-                    | markdown
-                    | markdown_github
-                    | markdown_strict
-                    | markdown_mmd
-                    | markdown_phpextra
-                    | commonmark
-                    | plain
-                    | rst
-                    | mediawiki
-                    | textile
-                    | rtf
-                    | org
-                    | asciidoc
+  |Convert From (any)| Convert To (any)   |
+  |:-----------------|:-------------------|
+  |markdown          | json               |
+  |markdown_github   | html               |
+  |markdown_strict   | html5              |
+  |markdown_mmd      | s5                 |
+  |commonmark        | slidy              |
+  |json              | dzslides           |
+  |rst               | docbook            |
+  |textile           | man                |
+  |html              | opendocument       |
+  |latex             | latex              |
+  |markdown_phpextra | beamer             |
+  |                  | context            |
+  |                  | texinfo            |
+  |                  | markdown           |
+  |                  | markdown_github    |
+  |                  | markdown_strict    |
+  |                  | markdown_mmd       |
+  |                  | markdown_phpextra  |
+  |                  | commonmark         |
+  |                  | plain              |
+  |                  | rst                |
+  |                  | mediawiki          |
+  |                  | textile            |
+  |                  | rtf                |
+  |                  | org                |
+  |                  | asciidoc           |
 
   # Usage
 
@@ -105,24 +103,23 @@ defmodule Pandex do
     Enum.each @writers, fn (writer) ->
       #function names are atoms. Hence converting String to Atom here. You can also use:
       # `name = reader <> "_to_" <> writer |> String.to_atom`
-      @doc """
-      convert a string of text from one format to another.
-      Example: `markdown_file_to_html("sample.md") `
-      """
+      # convert a string from one format to another.
+      # Example: markdown_to_html5 "# Title \n\n## List\n\n- one\n- two\n- three\n"
       def unquote(:"#{reader}_to_#{writer}")(string) do
         convert_string(string, unquote(reader), unquote(writer))
       end
 
-      @doc """
-      convert a file from one format to another.
-      Example: `markdown_file_to_html("sample.md") `
-      """
+      # convert a file from one format to another.
+      # Example: `markdown_file_to_html("sample.md") `
       def unquote(:"#{reader}_file_to_#{writer}")(file) do
         convert_file(file, unquote(reader), unquote(writer))
       end
     end
   end
 
+  @doc """
+  `convert_string` works under the hood of all the other string conversion functions.
+  """
   def convert_string(string, from \\ "markdown", to \\ "html", _options \\ []) do
     if !File.dir?(".temp"), do: File.mkdir ".temp"
     name = ".temp/" <> random_name
@@ -132,6 +129,9 @@ defmodule Pandex do
     {:ok, output}
   end
 
+  @doc """
+  `convert_file` works under the hood of all the other functions.
+  """
   def convert_file(file, from \\ "markdown", to \\ "html", _options \\ [] ) do
     {output,_} = System.cmd "pandoc", [file , "--from=#{from}" , "--to=#{to}"]
     {:ok, output}

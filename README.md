@@ -2,64 +2,66 @@
 
 Pandex is a lightweight Elixir wrapper for [Pandoc](http://pandoc.org). Pandex has no dependencies other than Pandoc itself.
 
-Pandex enables you to perform any permutation of the conversion below:
+Pandex enables you to perform any combination of the conversions below:
 
-Convert From (any)| Convert To (any)
-------------------|-------------------
-markdown          | json
-markdown_github   | html
-markdown_strict   | html5
-markdown_mmd      | s5
-commonmark        | slidy
-json              | dzslides
-rst               | docbook
-textile           | man
-html              | opendocument
-latex             | latex
-markdown_phpextra | beamer
-                  | context
-                  | texinfo
-                  | markdown
-                  | markdown_github
-                  | markdown_strict
-                  | markdown_mmd
-                  | markdown_phpextra
-                  | commonmark
-                  | plain
-                  | rst
-                  | mediawiki
-                  | textile
-                  | rtf
-                  | org
-                  | asciidoc
+|Convert From (any)| Convert To (any)   |
+|:-----------------|:-------------------|
+|markdown          | json               |
+|markdown_github   | html               |
+|markdown_strict   | html5              |
+|markdown_mmd      | s5                 |
+|commonmark        | slidy              |
+|json              | dzslides           |
+|rst               | docbook            |
+|textile           | man                |
+|html              | opendocument       |
+|latex             | latex              |
+|markdown_phpextra | beamer             |
+|                  | context            |
+|                  | texinfo            |
+|                  | markdown           |
+|                  | markdown_github    |
+|                  | markdown_strict    |
+|                  | markdown_mmd       |
+|                  | markdown_phpextra  |
+|                  | commonmark         |
+|                  | plain              |
+|                  | rst                |
+|                  | mediawiki          |
+|                  | textile            |
+|                  | rtf                |
+|                  | org                |
+|                  | asciidoc           |
 
 # Installation
 
 1. Pandex requires Pandoc to work. [Install Pandoc](http://pandoc.org/installing.html) for your operating system.
+
 2. Add Pandex to `mix.exs` as follows:
 
-  ``` elixir
-  defmodule YourApp.Mixfile do
-    defp deps do
-      [
-        {:pandex, "~> 0.0.3"}
-      ]
+    ```elixir
+    defmodule YourApp.Mixfile do
+      defp deps do
+        [
+          {:pandex, "~> 0.0.3"}
+        ]
+      end
     end
-  end
-  ```
+    ```
 
 3. Run `mix deps.get` to install `Pandex`.
+
 4. Add `Pandex` your application block in `mix.exs`
 
-  ``` elixir
-  defmodule YourApp.Mixfile do
-    use Mix.Project
+    ```elixir
+    defmodule YourApp.Mixfile do
+      use Mix.Project
 
-    def application do
-      [applications: [:logger, :pandex]]
+      def application do
+        [applications: [:logger, :pandex]]
+      end
     end
-  end
-  ```
+    ```
 
 # Usage
 

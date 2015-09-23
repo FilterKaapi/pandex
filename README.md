@@ -43,7 +43,7 @@ Pandex enables you to perform any combination of the conversions below:
     defmodule YourApp.Mixfile do
       defp deps do
         [
-          {:pandex, "~> 0.1.0"}
+          {:pandex, "~> 0.1.1"}
         ]
       end
     end

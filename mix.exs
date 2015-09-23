@@ -4,7 +4,7 @@ defmodule Pandex.Mixfile do
   def project do
     [
      app: :pandex,
-     version: "0.1.0",
+     version: "0.1.1",
      name: "pandex",
      elixir: "~> 1.0",
      source_url: "https://github.com/filterkaapi/pandex",

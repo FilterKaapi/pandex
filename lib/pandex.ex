@@ -142,6 +142,7 @@ defmodule Pandex do
   end
 
   defp random_string do
+    :random.seed(:erlang.monotonic_time, :erlang.time_offset, :erlang.unique_integer)
     0x100000000000000 |> :random.uniform |> Integer.to_string(36) |> String.downcase
   end
 

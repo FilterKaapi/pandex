@@ -1,5 +1,5 @@
 defmodule Pandex do
-  @readers ["markdown", "markdown_github", "markdown_strict", "markdown_mmd", "markdown_phpextra", "commonmark", "json", "rst", "textile", "html", "latex"]
+  @readers ["markdown", "markdown_github", "markdown_strict", "markdown_mmd", "markdown_phpextra", "commonmark", "json", "rst", "textile", "html", "latex", "docx", "odt"]
   @writers [ "json", "html", "html5", "s5", "slidy", "dzslides", "docbook", "man",
             "opendocument", "latex", "beamer", "context", "texinfo", "markdown",
             "markdown_github", "markdown_strict", "markdown_mmd", "markdown_phpextra", "commonmark",
@@ -13,6 +13,7 @@ defmodule Pandex do
 
   |Convert From (any)| Convert To (any)   |
   |:-----------------|:-------------------|
+  |docx              | html               |
   |markdown          | json               |
   |markdown_github   | html               |
   |markdown_strict   | html5              |
@@ -45,6 +46,9 @@ defmodule Pandex do
   Pandex follows the syntax of `<format from>_to_<format to> <string>`
 
   ## Examples:
+
+      iex> Pandex.docx_to_html(File.read!(System.cwd() <> "/test/fixtures/test.docx"), ["-s", "--toc"])
+      {:ok, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n  <meta name=\"generator\" content=\"pandoc\" />\n  <title></title>\n  <style type=\"text/css\">code{white-space: pre;}</style>\n</head>\n<body>\n<div id=\"TOC\">\n<ul>\n<li><a href=\"#hello-world\">Hello World</a></li>\n</ul>\n</div>\n<h1 id=\"hello-world\">Hello World</h1>\n<p>Lorem ipsum</p>\n</body>\n</html>\n"}
 
       iex> Pandex.markdown_to_html "# Title \n\n## List\n\n- one\n- two\n- three\n"
       {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
@@ -105,14 +109,14 @@ defmodule Pandex do
       # `name = reader <> "_to_" <> writer |> String.to_atom`
       # convert a string from one format to another.
       # Example: markdown_to_html5 "# Title \n\n## List\n\n- one\n- two\n- three\n"
-      def unquote(:"#{reader}_to_#{writer}")(string) do
-        convert_string(string, unquote(reader), unquote(writer))
+      def unquote(:"#{reader}_to_#{writer}")(string, options \\ []) do
+        convert_string(string, unquote(reader), unquote(writer), options)
       end
 
       # convert a file from one format to another.
       # Example: `markdown_file_to_html("sample.md") `
-      def unquote(:"#{reader}_file_to_#{writer}")(file) do
-        convert_file(file, unquote(reader), unquote(writer))
+      def unquote(:"#{reader}_file_to_#{writer}")(file, options \\ []) do
+        convert_file(file, unquote(reader), unquote(writer), options)
       end
     end
   end
@@ -120,11 +124,12 @@ defmodule Pandex do
   @doc """
   `convert_string` works under the hood of all the other string conversion functions.
   """
-  def convert_string(string, from \\ "markdown", to \\ "html", _options \\ []) do
+  def convert_string(string, from \\ "markdown", to \\ "html", options \\ []) do
     if !File.dir?(".temp"), do: File.mkdir ".temp"
     name = ".temp/" <> random_name
     File.write name, string
-    {output,_} = System.cmd "pandoc", [name , "--from=#{from}" , "--to=#{to}"]
+    args = [name , "--from=#{from}" , "--to=#{to}"] ++ options
+    {output,_} = System.cmd "pandoc", args
     File.rm name
     {:ok, output}
   end
@@ -132,8 +137,9 @@ defmodule Pandex do
   @doc """
   `convert_file` works under the hood of all the other functions.
   """
-  def convert_file(file, from \\ "markdown", to \\ "html", _options \\ [] ) do
-    {output,_} = System.cmd "pandoc", [file , "--from=#{from}" , "--to=#{to}"]
+  def convert_file(file, from \\ "markdown", to \\ "html", options \\ [] ) do
+    args = [file , "--from=#{from}" , "--to=#{to}"] ++ options
+    {output,_} = System.cmd "pandoc", args
     {:ok, output}
   end
 

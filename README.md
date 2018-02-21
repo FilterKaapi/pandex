@@ -6,6 +6,7 @@ Pandex enables you to perform any combination of the conversions below:
 
 |Convert From (any)| Convert To (any)   |
 |:-----------------|:-------------------|
+|docx              | html               |
 |markdown          | json               |
 |markdown_github   | html               |
 |markdown_strict   | html5              |
@@ -70,6 +71,9 @@ Pandex follows the syntax of `<format from>_to_<format to> <string>`
 ## Examples
 
 ``` elixir
+iex> Pandex.docx_to_html(File.read!(System.cwd() <> "/test/fixtures/test.docx"), ["-s", "--toc"])
+{:ok, "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n  <meta name=\"generator\" content=\"pandoc\" />\n  <title></title>\n  <style type=\"text/css\">code{white-space: pre;}</style>\n</head>\n<body>\n<div id=\"TOC\">\n<ul>\n<li><a href=\"#hello-world\">Hello World</a></li>\n</ul>\n</div>\n<h1 id=\"hello-world\">Hello World</h1>\n<p>Lorem ipsum</p>\n</body>\n</html>\n"}
+
 iex> Pandex.markdown_to_html "# Title \n\n## List\n\n- one\n- two\n- three\n"
 {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
 

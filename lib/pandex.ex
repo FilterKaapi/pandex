@@ -119,8 +119,7 @@ defmodule Pandex do
   @doc """
   `convert_string` works under the hood of all the other string conversion functions.
   """
-  def convert_string(string, from, to, options \\ [])
-      when from in @readers and to in @writers and is_list(options) do
+  def convert_string(string, from, to, options \\ []) when is_list(options) do
     unless File.dir?(@tmp_folder), do: File.mkdir(@tmp_folder)
     file = Path.join(@tmp_folder, random_filename())
     File.write(file, string)
@@ -139,8 +138,7 @@ defmodule Pandex do
   @doc """
   `convert_file` works under the hood of all the other functions.
   """
-  def convert_file(file, from, to, options \\ [])
-      when from in @readers and to in @writers and is_list(options) do
+  def convert_file(file, from, to, options \\ []) when is_list(options) do
     case System.cmd("pandoc", [file, "--from=#{from}", "--to=#{to}" | options]) do
       {output, 0} -> {:ok, output}
       e -> {:error, e}

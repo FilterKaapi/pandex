@@ -4,7 +4,7 @@ Pandex is a lightweight Elixir wrapper for [Pandoc](http://pandoc.org). It has n
 
 Pandex enables you to perform any combination of the conversions below:
 
-|Convert From (any)  | Convert To (any)   |
+| Convert From (any) | Convert To (any)   |
 |:-------------------|:-------------------|
 | commonmark         | asciidoc           |
 | gfm                | beamer             |
@@ -31,7 +31,7 @@ Pandex enables you to perform any combination of the conversions below:
 |                    | rtf                |
 |                    | s5                 |
 |                    | slidy              |
-|                    |texinfo             |
+|                    | texinfo            |
 |                    | textile            |
 
 `*` Deprecated: `markdown_github`. Use `gfm` instead.
@@ -56,45 +56,46 @@ Pandex enables you to perform any combination of the conversions below:
 
 # Usage
 
-Pandex follows the syntax of `<format from>_to_<format to> <string>`
+Pandex follows the syntax of `<format-from>_to_<format-to>(<string>)`.
 
 ## Examples
 
-```elixir
-iex> Pandex.gfm_to_html("# Title \n\n## List\n\n- one\n- two\n- three\n")
-{:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
+    ```elixir
+    iex> Pandex.gfm_to_html("# Title \n\n## List\n\n- one\n- two\n- three\n")
+    {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li>one</li>\n<li>two</li>\n<li>three</li>\n</ul>\n"}
 
-iex> Pandex.latex_to_html5("\\section{Title}\n\n\\subsection{List}\n\n\\begin{itemize}\n\\tightlist\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n")
-{:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li><p>one</p></li>\n<li><p>two</p></li>\n<li><p>three</p></li>\n</ul>\n"}
+    iex> Pandex.latex_to_html5("\\section{Title}\n\n\\subsection{List}\n\n\\begin{itemize}\n\\tightlist\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n")
+    {:ok, "<h1 id=\"title\">Title</h1>\n<h2 id=\"list\">List</h2>\n<ul>\n<li><p>one</p></li>\n<li><p>two</p></li>\n<li><p>three</p></li>\n</ul>\n"}
 
-iex> Pandex.latex_to_json("\\section{Title}\\label{title}\n\n\\subsection{List}\\label{list}\n\n\\begin{itemize}\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n")
-{:ok, "{\"blocks\":[{\"t\":\"Header\",\"c\":[1,[\"title\",[],[]],[{\"t\":\"Str\",\"c\":\"Title\"}]]},{\"t\":\"Header\",\"c\":[2,[\"list\",[],[]],[{\"t\":\"Str\",\"c\":\"List\"}]]},{\"t\":\"BulletList\",\"c\":[[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"one\"}]}],[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"two\"}]}],[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"three\"}]}]]}],\"pandoc-api-version\":[1,17,5,4],\"meta\":{}}\n"}
-```
+    iex> Pandex.latex_to_json("\\section{Title}\\label{title}\n\n\\subsection{List}\\label{list}\n\n\\begin{itemize}\n\\item\n  one\n\\item\n  two\n\\item\n  three\n\\end{itemize}\n")
+    {:ok, "{\"blocks\":[{\"t\":\"Header\",\"c\":[1,[\"title\",[],[]],[{\"t\":\"Str\",\"c\":\"Title\"}]]},{\"t\":\"Header\",\"c\":[2,[\"list\",[],[]],[{\"t\":\"Str\",\"c\":\"List\"}]]},{\"t\":\"BulletList\",\"c\":[[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"one\"}]}],[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"two\"}]}],[{\"t\":\"Para\",\"c\":[{\"t\":\"Str\",\"c\":\"three\"}]}]]}],\"pandoc-api-version\":[1,17,5,4],\"meta\":{}}\n"}
+    ```
 
 ## Using with your app
 
-``` elixir
-defmodule YourApp do
-  import Pandex
+    ```elixir
+    defmodule YourApp do
+      import Pandex
 
-  def convert(string)  do
-    {:ok, output} = markdown_to_html(string)
-    IO.puts output
-  end
-end
-```
+      def convert(string)  do
+        {:ok, output} = markdown_to_html(string)
+        IO.puts(output)
+      end
+    end
+    ```
 
 You can also give a file as an input. The output will however be a string.
-``` elixir
-defmodule YourApp do
-  import Pandex
 
-  def convert(file)  do
-    {:ok, output} = markdown_file_to_html(file)
-    IO.puts output
-  end
-end
-```
+    ```elixir
+    defmodule YourApp do
+      import Pandex
+
+      def convert(file)  do
+        {:ok, output} = markdown_file_to_html(file)
+        IO.puts(output)
+      end
+    end
+    ```
 
 # License
 

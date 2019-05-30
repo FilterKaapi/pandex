@@ -31,10 +31,9 @@ defmodule Pandex.Mixfile do
   end
 
   defp package do
-    # These are the default files included in the package
     [
-      files: ["lib", "priv", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
-      contributors: ["Sandeep Laxman"],
+      files: ["lib", "mix.exs", "README.MD", "LICENSE"],
+      contributors: ["Sandeep Laxman", "Sean Omlor"],
       licenses: ["MIT"],
       links: %{
         "GitHub" => "https://github.com/filterkaapi/pandex",
